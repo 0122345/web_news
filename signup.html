@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Daily Herald</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <header class="auth-header">
+                <div class="logo">
+                    <i class="fas fa-newspaper"></i>
+                    <h1>Daily Herald</h1>
+                </div>
+                <h2>Create Your Account</h2>
+                <p>Join our community and stay informed</p>
+            </header>
+            
+            <main class="auth-main">
+                <form action="signup.php" method="POST" class="auth-form">
+                    <div class="form-group">
+                        <label for="fullname">
+                            <i class="fas fa-user"></i>
+                            Full Name
+                        </label>
+                        <input type="text" id="fullname" name="fullname" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">
+                            <i class="fas fa-envelope"></i>
+                            Email Address
+                        </label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">
+                            <i class="fas fa-user-circle"></i>
+                            Username
+                        </label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fas fa-lock"></i>
+                            Password
+                        </label>
+                        <input type="password" id="password" name="password" required>
+                        <div class="password-strength" id="passwordStrength"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">
+                            <i class="fas fa-lock"></i>
+                            Confirm Password
+                        </label>
+                        <input type="password" id="confirm_password" name="confirm_password" required>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" required>
+                            <span class="checkmark"></span>
+                            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+                
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+                
+                <div class="social-auth">
+                    <button class="btn btn-social btn-google">
+                        <i class="fab fa-google"></i>
+                        Continue with Google
+                    </button>
+                    <button class="btn btn-social btn-facebook">
+                        <i class="fab fa-facebook-f"></i>
+                        Continue with Facebook
+                    </button>
+                </div>
+            </main>
+            
+            <footer class="auth-footer">
+                <p>Already have an account? <a href="login.html">Sign In</a></p>
+                <p><a href="index.html">← Back to Home</a></p>
+            </footer>
+        </div>
+        
+        <aside class="auth-sidebar">
+            <div class="sidebar-content"> 
+                <div class="con">
+                <h3>Join Daily Herald Community</h3>
+                <ul class="benefits-list">
+                    <li><i class="fas fa-check"></i> Get personalized news recommendations</li>
+                    <li><i class="fas fa-check"></i> Comment and engage with articles</li>
+                    <li><i class="fas fa-check"></i> Save articles for later reading</li>
+                    <li><i class="fas fa-check"></i> Follow your favorite topics</li>
+                    <li><i class="fas fa-check"></i> Receive breaking news alerts</li>
+                </ul>
+                
+                <div class="testimonial">
+                    <blockquote>
+                        "Daily Herald keeps me informed with reliable, up-to-date news. The community features make reading news more engaging!"
+                    </blockquote>
+                    <cite>- Sarah Johnson, Subscriber</cite>
+                </div>
+                </div>  
+                </div>
+                
+            </div>
+        </aside>
+    </div>
+    
+    <script>
+        // Password strength checker
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthDiv = document.getElementById('passwordStrength');
+            const strength = checkPasswordStrength(password);
+            
+            strengthDiv.className = 'password-strength ' + strength.class;
+            strengthDiv.textContent = strength.text;
+        });
+        
+                 function checkPasswordStrength(password) {
+            if (password.length < 6) {
+                return { class: 'weak', text: 'Weak - At least 6 characters needed' };
+            } else if (password.length < 8) {
+                return { class: 'medium', text: 'Medium - Add more characters' };
+            } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+                return { class: 'medium', text: 'Medium - Add uppercase, lowercase and numbers' };
+            } else {
+                return { class: 'strong', text: 'Strong password!' };
+            }
+        }
+        
+        // Form validation
+        document.querySelector('.auth-form').addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Passwords do not match!');
+            }
+        });
+    </script>
+</body>
+</html>
+
