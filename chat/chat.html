@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Organization Chat</title>
+     <link rel="stylesheet" href="chat.css">
+</head>
+<body>
+     <div class="redirect-container">
+          <h2>Redirecting to Chat Room...</h2>
+          <p>If you are not redirected automatically, <a href="chatroom.php">click here</a>.</p>
+     </div>
+     
+     <script>
+          // Redirect to the main chat application
+          window.location.href = 'chatroom.php';
+     </script>
+     
+     <style>
+          .redirect-container {
+               display: flex;
+               flex-direction: column;
+               justify-content: center;
+               align-items: center;
+               height: 100vh;
+               text-align: center;
+               font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          }
+          
+          .redirect-container h2 {
+               color: #667eea;
+               margin-bottom: 10px;
+          }
+          
+          .redirect-container a {
+               color: #667eea;
+               text-decoration: none;
+          }
+          
+          .redirect-container a:hover {
+               text-decoration: underline;
+          }
+     </style>
+</body>
+</html>
