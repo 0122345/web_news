@@ -1,4 +1,3 @@
-// Chat Application JavaScript
 class ChatApp {
     constructor() {
         this.currentRoomId = null;
