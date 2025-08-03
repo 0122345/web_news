@@ -149,6 +149,6 @@ $conn->close();
     </div>
     
     <p><a href="debug_login.php">← Back to Debug</a></p>
-    <p><a href="login.html">← Back to Login</a></p>
+    <p><a href="/auth/auth/login.html">← Back to Login</a></p>
 </body>
 </html>

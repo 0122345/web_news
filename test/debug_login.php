@@ -130,6 +130,6 @@ $conn->close();
         </form>
     </div>
     
-    <p><a href="login.html">← Back to Login Page</a></p>
+    <p><a href="/auth/auth/login.html">← Back to Login Page</a></p>
 </body>
 </html>

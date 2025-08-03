@@ -1,0 +1,36 @@
+ rename login.html => auth/login.html (100%)
+ rename login.php => auth/login.php (100%)
+ rename logout.php => auth/logout.php (100%)
+ rename signup.html => auth/signup.html (100%)
+ rename signup.php => auth/signup.php (100%)
+ rename announcement.php => components/blogs/blog.css (100%)
+ create mode 100644 components/blogs/blog.js
+ create mode 100644 components/blogs/blog.php
+ rename {chat => components/chat}/README.md (100%)
+ rename {chat => components/chat}/chat.css (100%)
+ rename {chat => components/chat}/chat.html (100%)
+ rename {chat => components/chat}/chat.js (99%)
+ create mode 100644 components/chat/chat.sql
+ rename {chat => components/chat}/chat_fixed.js (100%)
+ rename {chat => components/chat}/chatroom.php (100%)
+ rename {chat => components/chat}/create_room.php (100%)
+ rename {chat => components/chat}/enhanced_chat.js (100%)
+ rename {chat => components/chat}/upload_file.php (100%)
+ rename {chat => components/chat}/uploads/images/688bbba1791a3_1753988001.png (100%)
+ create mode 100644 components/lost&found/found.js
+ create mode 100644 components/lost&found/lost.css
+ create mode 100644 components/lost&found/lost_found.php
+ rename add_comment.php => features/add_comment.php (100%)
+ create mode 100644 features/announcement.php
+ rename get_articles.php => features/get_articles.php (100%)
+ rename get_comments.php => features/get_comments.php (100%)
+ rename toggle_like.php => features/toggle_like.php (100%)
+ rename track_share.php => features/track_share.php (100%)
+ rename index.html => home/index.html (100%)
+ rename script.js => home/script.js (100%)
+ rename style.css => home/style.css (100%)
+ rename check_auth.php => test/check_auth.php (100%)
+ rename debug_login.php => test/debug_login.php (100%)
+ rename fix_passwords.php => test/fix_passwords.php (100%)
+ rename profile.php => user_management/profile.php (100%)
+ create mode 100644 utils/notfound.html

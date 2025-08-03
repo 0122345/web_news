@@ -86,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         window.location.href = 'profile.php';
     }, 1000);
 </script>";
-            echo "<a href='profile.php'></a>";
+            echo "<a href='/auth/user_management/profile.php'></a>";
             exit;
         } else {
             $errors[] = "Registration failed. Please try again.";
