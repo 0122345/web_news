@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Test - Final</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #000;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-info">
+        <div>CSS Status:</div>
+        <div id="cssStatus">Checking...</div>
+    </div>
+    
+    <!-- Test Navigation -->
+    <nav class="floating-nav">
+        <div class="nav-brand">
+            <div class="brand-icon">
+                <i class="fas fa-network-wired"></i>
+            </div>
+            <span class="brand-text">Fiacomm</span>
+        </div>
+        
+        <div class="nav-links">
+            <a href="#" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-comments"></i>
+                <span>Chat</span>
+            </a>
+        </div>
+        
+        <div class="nav-actions">
+            <button class="search-toggle">
+                <i class="fas fa-search"></i>
+            </button>
+            <button class="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            
+            <div class="auth-section">
+                <a href="#" class="auth-btn login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <a href="#" class="auth-btn signup-btn">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Join</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Test Hero Section -->
+    <main class="main-wrapper">
+        <section class="hero-section">
+            <div class="hero-background">
+                <div class="animated-bg">
+                    <div class="bg-element bg-element-1"></div>
+                    <div class="bg-element bg-element-2"></div>
+                    <div class="bg-element bg-element-3"></div>
+                </div>
+            </div>
+            
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-badge">
+                        <i class="fas fa-rocket"></i>
+                        <span>CSS is Working!</span>
+                    </div>
+                    
+                    <h1 class="hero-title">
+                        <span class="title-line">Fiacomm</span>
+                        <span class="title-line gradient-text">Platform</span>
+                    </h1>
+                    
+                    <p class="hero-description">
+                        If you can see this styled properly, the CSS is loading correctly!
+                    </p>
+                    
+                    <div class="hero-actions">
+                        <button class="cta-btn primary-cta">
+                            <span>Primary Button</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button class="cta-btn secondary-cta">
+                            <i class="fas fa-play"></i>
+                            <span>Secondary Button</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="hero-visual">
+                    <div class="ecosystem-preview">
+                        <div class="preview-card card-1">
+                            <div class="card-header">
+                                <i class="fas fa-comments"></i>
+                                <span>Test Card 1</span>
+                            </div>
+                        </div>
+                        <div class="preview-card card-2">
+                            <div class="card-header">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Test Card 2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        function checkCSS() {
+            const nav = document.querySelector('.floating-nav');
+            const status = document.getElementById('cssStatus');
+            
+            if (nav) {
+                const styles = window.getComputedStyle(nav);
+                const position = styles.position;
+                const background = styles.backgroundColor;
+                const borderRadius = styles.borderRadius;
+                
+                const isWorking = position === 'fixed' && borderRadius !== '0px';
+                
+                status.innerHTML = `
+                    <div style="color: ${isWorking ? '#00ff00' : '#ff0000'}">
+                        ${isWorking ? '✅ CSS LOADED!' : '❌ CSS NOT LOADED'}
+                    </div>
+                    <div>Position: ${position}</div>
+                    <div>Border Radius: ${borderRadius}</div>
+                `;
+                
+                if (isWorking) {
+                    status.style.background = '#004400';
+                } else {
+                    status.style.background = '#440000';
+                }
+            }
+        }
+        
+        // Check multiple times to ensure CSS loads
+        setTimeout(checkCSS, 100);
+        setTimeout(checkCSS, 500);
+        setTimeout(checkCSS, 1000);
+        window.addEventListener('load', checkCSS);
+    </script>
+</body>
+</html>

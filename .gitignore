@@ -1,3 +1,5 @@
 .hintrc
 .env
 /chat/setup_database_fixed.sql
+/node_modules/
+/public/

@@ -3,30 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Daily Herald</title>
-    <link rel="stylesheet" href="/auth/home/style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>EcoComm - Ecosystem Communication Platform</title>
+    <link rel="stylesheet" href="ecosystem-auth.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
 </head>
 <body class="auth-page">
+    <!-- Floating Background Elements -->
+    <div class="eco-float-1"></div>
+    <div class="eco-float-2"></div>
+    <div class="eco-float-3"></div>
+    
     <div class="auth-container">
         <div class="auth-card">
             <header class="auth-header">
                 <div class="logo">
-                    <i class="fas fa-newspaper"></i>
-                    <h1>Daily Herald</h1>
+                    <i class="fas fa-seedling"></i>
+                    <h1>EcoComm</h1>
                 </div>
-                <h2>Welcome Back</h2>
-                <p>Sign in to your account</p>
+                <h2>Welcome to the Ecosystem</h2>
+                <p>Connect, communicate, and collaborate in our digital ecosystem</p>
             </header>
             
             <main class="auth-main">
-                <form action="login.php" method="POST" class="auth-form">
+                <form action="login.php" method="POST" class="auth-form" id="loginForm">
                     <div class="form-group">
                         <label for="username">
-                            <i class="fas fa-user"></i>
+                            <i class="fas fa-user-circle"></i>
                             Username or Email
                         </label>
-                        <input type="text" id="username" name="username" required>
+                        <input type="text" id="username" name="username" required 
+                               placeholder="Enter your username or email">
                     </div>
 
                     <div class="form-group">
@@ -34,34 +41,38 @@
                             <i class="fas fa-lock"></i>
                             Password
                         </label>
-                        <input type="password" id="password" name="password" required>
+                        <input type="password" id="password" name="password" required 
+                               placeholder="Enter your password">
                     </div>
 
                     <div class="form-group checkbox-group">
                         <label class="checkbox-label">
                             <input type="checkbox" name="remember">
                             <span class="checkmark"></span>
-                            Remember me
+                            Remember me in this ecosystem
                         </label>
-                        <a href="#" class="forgot-password">Forgot Password?</a>
+                        <a href="forgot-password.html" class="forgot-password">
+                            <i class="fas fa-question-circle"></i>
+                            Forgot Password?
+                        </a>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-full">
+                    <button type="submit" class="btn btn-primary btn-full" id="loginBtn">
                         <i class="fas fa-sign-in-alt"></i>
-                        Sign In
+                        <span>Enter Ecosystem</span>
                     </button>
                 </form>
                 
                 <div class="auth-divider">
-                    <span>or</span>
+                    <span>or connect with</span>
                 </div>
                 
                 <div class="social-auth">
-                    <button class="btn btn-social btn-google">
+                    <button class="btn btn-social btn-google" type="button">
                         <i class="fab fa-google"></i>
                         Continue with Google
                     </button>
-                    <button class="btn btn-social btn-facebook">
+                    <button class="btn btn-social btn-facebook" type="button">
                         <i class="fab fa-facebook-f"></i>
                         Continue with Facebook
                     </button>
@@ -69,32 +80,347 @@
             </main>
             
             <footer class="auth-footer">
-                <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
-                <p><a href="/auth/home/index.html">← Back to Home</a></p>
+                <p>New to our ecosystem? <a href="signup.html">Join the Community</a></p>
+                <p><a href="../home/index.html">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Home
+                </a></p>
             </footer>
         </div>
         
         <aside class="auth-sidebar">
             <div class="sidebar-content">
-                <h3>Stay Informed</h3>
-                <p>Access the latest news, breaking stories, and in-depth analysis from trusted journalists around the world.</p>
+                <h3>Digital Ecosystem</h3>
+                <p>Join a thriving community where communication flows naturally, ideas grow organically, and collaboration creates sustainable impact.</p>
                 
                 <div class="stats">
                     <div class="stat">
-                        <h4>10M+</h4>
-                        <p>Monthly Readers</p>
+                        <h4>50K+</h4>
+                        <p>Active Members</p>
                     </div>
                     <div class="stat">
-                        <h4>50K+</h4>
-                        <p>Daily Articles</p>
+                        <h4>1M+</h4>
+                        <p>Connections Made</p>
                     </div>
                     <div class="stat">
                         <h4>24/7</h4>
-                        <p>News Coverage</p>
+                        <p>Ecosystem Activity</p>
                     </div>
+                </div>
+                
+                <div class="testimonial">
+                    <blockquote>
+                        "EcoComm has transformed how our organization communicates. It's like having a living, breathing ecosystem where every voice matters."
+                    </blockquote>
+                    <cite>- Dr. Sarah Chen, Environmental Scientist</cite>
                 </div>
             </div>
         </aside>
     </div>
+
+    <script>
+        // Enhanced form handling with ecosystem theme
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const loginBtn = document.getElementById('loginBtn');
+            const inputs = document.querySelectorAll('input[required]');
+
+            // Add real-time validation
+            inputs.forEach(input => {
+                input.addEventListener('blur', validateField);
+                input.addEventListener('input', clearErrors);
+            });
+
+            // Form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (validateForm()) {
+                    submitForm();
+                }
+            });
+
+            function validateField(e) {
+                const field = e.target;
+                const fieldGroup = field.closest('.form-group');
+                
+                // Remove existing error states
+                fieldGroup.classList.remove('error', 'success');
+                const existingError = fieldGroup.querySelector('.error-message');
+                if (existingError) {
+                    existingError.remove();
+                }
+
+                let isValid = true;
+                let errorMessage = '';
+
+                if (field.name === 'username') {
+                    if (field.value.length < 3) {
+                        isValid = false;
+                        errorMessage = 'Username must be at least 3 characters';
+                    } else if (field.value.includes('@') && !isValidEmail(field.value)) {
+                        isValid = false;
+                        errorMessage = 'Please enter a valid email address';
+                    }
+                } else if (field.name === 'password') {
+                    if (field.value.length < 6) {
+                        isValid = false;
+                        errorMessage = 'Password must be at least 6 characters';
+                    }
+                }
+
+                if (!isValid) {
+                    fieldGroup.classList.add('error');
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-message';
+                    errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${errorMessage}`;
+                    fieldGroup.appendChild(errorDiv);
+                } else if (field.value) {
+                    fieldGroup.classList.add('success');
+                    const successDiv = document.createElement('div');
+                    successDiv.className = 'success-message';
+                    successDiv.innerHTML = `<i class="fas fa-check-circle"></i> Looks good!`;
+                    fieldGroup.appendChild(successDiv);
+                }
+
+                return isValid;
+            }
+
+            function clearErrors(e) {
+                const fieldGroup = e.target.closest('.form-group');
+                fieldGroup.classList.remove('error');
+                const errorMessage = fieldGroup.querySelector('.error-message');
+                if (errorMessage) {
+                    errorMessage.remove();
+                }
+            }
+
+            function validateForm() {
+                let isValid = true;
+                inputs.forEach(input => {
+                    if (!validateField({ target: input })) {
+                        isValid = false;
+                    }
+                });
+                return isValid;
+            }
+
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            function submitForm() {
+                // Add loading state
+                loginBtn.classList.add('loading');
+                loginBtn.disabled = true;
+
+                const formData = new FormData(loginForm);
+
+                fetch('login.php', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification('Welcome to the ecosystem! Redirecting...', 'success');
+                        setTimeout(() => {
+                            window.location.href = data.redirect || 'profile.php';
+                        }, 1500);
+                    } else {
+                        showNotification(data.message || 'Login failed. Please try again.', 'error');
+                        loginBtn.classList.remove('loading');
+                        loginBtn.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('Connection error. Please try again.', 'error');
+                    loginBtn.classList.remove('loading');
+                    loginBtn.disabled = false;
+                });
+            }
+
+            function showNotification(message, type = 'info') {
+                // Remove existing notifications
+                const existingNotifications = document.querySelectorAll('.notification');
+                existingNotifications.forEach(notification => notification.remove());
+
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <div class="notification-icon">
+                            <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'info'}"></i>
+                        </div>
+                        <div class="notification-text">
+                            <div class="notification-message">${message}</div>
+                        </div>
+                        <button class="notification-close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+
+                // Add notification styles if not already present
+                if (!document.querySelector('.notification-container')) {
+                    const container = document.createElement('div');
+                    container.className = 'notification-container';
+                    document.body.appendChild(container);
+                }
+
+                const container = document.querySelector('.notification-container');
+                container.appendChild(notification);
+
+                // Show notification
+                setTimeout(() => notification.classList.add('show'), 100);
+
+                // Auto remove after 5 seconds
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                }, 5000);
+
+                // Close button functionality
+                notification.querySelector('.notification-close').addEventListener('click', () => {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                });
+            }
+
+            // Social login handlers
+            document.querySelector('.btn-google').addEventListener('click', function() {
+                showNotification('Google authentication coming soon!', 'info');
+            });
+
+            document.querySelector('.btn-facebook').addEventListener('click', function() {
+                showNotification('Facebook authentication coming soon!', 'info');
+            });
+
+            // Add floating animation to background elements
+            const floatingElements = document.querySelectorAll('[class^="eco-float"]');
+            floatingElements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 7}s`;
+            });
+        });
+
+        // Add notification styles dynamically
+        const notificationStyles = `
+            .notification-container {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                max-width: 400px;
+            }
+
+            .notification {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                border-radius: 12px;
+                padding: 16px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                transform: translateX(100%);
+                opacity: 0;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .notification.show {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            .notification::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 4px;
+                height: 100%;
+            }
+
+            .notification.success::before {
+                background: var(--eco-success);
+            }
+
+            .notification.error::before {
+                background: var(--eco-error);
+            }
+
+            .notification.info::before {
+                background: var(--eco-info);
+            }
+
+            .notification-content {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .notification-icon {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                color: white;
+                flex-shrink: 0;
+            }
+
+            .notification.success .notification-icon {
+                background: var(--eco-success);
+            }
+
+            .notification.error .notification-icon {
+                background: var(--eco-error);
+            }
+
+            .notification.info .notification-icon {
+                background: var(--eco-info);
+            }
+
+            .notification-text {
+                flex: 1;
+            }
+
+            .notification-message {
+                font-size: 14px;
+                color: var(--eco-gray-800);
+                font-weight: 500;
+            }
+
+            .notification-close {
+                background: none;
+                border: none;
+                color: var(--eco-gray-400);
+                cursor: pointer;
+                padding: 4px;
+                border-radius: 4px;
+                transition: all 0.3s ease;
+                flex-shrink: 0;
+            }
+
+            .notification-close:hover {
+                background: var(--eco-gray-100);
+                color: var(--eco-gray-600);
+            }
+        `;
+
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = notificationStyles;
+        document.head.appendChild(styleSheet);
+    </script>
 </body>
 </html>

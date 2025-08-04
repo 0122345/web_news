@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #059669;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #047857;
+        }
+        pre {
+            background: #333;
+            color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .logged-in {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+        .logged-out {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <h1>Authentication Status Test</h1>
+    
+    <div class="test-section">
+        <h2>Current Status</h2>
+        <div id="authStatus" class="status">Checking...</div>
+        <button onclick="checkAuth()">Refresh Status</button>
+        <button onclick="testLogin()">Test Login</button>
+        <button onclick="testLogout()">Test Logout</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Session Debug Info</h2>
+        <pre id="debugInfo">Loading...</pre>
+    </div>
+    
+    <div class="test-section">
+        <h2>Navigation Test</h2>
+        <p>This simulates the homepage navigation:</p>
+        
+        <!-- Auth Buttons -->
+        <div id="authButtons" style="display: none;">
+            <button>Login</button>
+            <button>Join</button>
+        </div>
+        
+        <!-- Welcome Message -->
+        <div id="welcomeMessage" style="display: none;">
+            <span>Welcome, <span id="navUsername">User</span>!</span>
+        </div>
+        
+        <!-- User Menu -->
+        <div id="userMenu" style="display: none;">
+            <div>👤 <span id="userName">User Name</span></div>
+            <div><small id="userRole">Role</small></div>
+        </div>
+    </div>
+
+    <script>
+        async function checkAuth() {
+            try {
+                // Check debug endpoint
+                const debugResponse = await fetch('/auth/auth/debug_session.php');
+                const debugData = await debugResponse.json();
+                document.getElementById('debugInfo').textContent = JSON.stringify(debugData, null, 2);
+                
+                // Check regular endpoint
+                const response = await fetch('/auth/auth/check_session.php');
+                const data = await response.json();
+                
+                const statusDiv = document.getElementById('authStatus');
+                
+                if (data.logged_in) {
+                    statusDiv.className = 'status logged-in';
+                    statusDiv.innerHTML = `
+                        <strong>✅ LOGGED IN</strong><br>
+                        User: ${data.user.fullname || data.user.username}<br>
+                        Email: ${data.user.email}<br>
+                        Role: ${data.user.primary_role ? data.user.primary_role.display_name : 'None'}
+                    `;
+                    
+                    // Update test navigation
+                    document.getElementById('authButtons').style.display = 'none';
+                    document.getElementById('welcomeMessage').style.display = 'block';
+                    document.getElementById('userMenu').style.display = 'block';
+                    document.getElementById('navUsername').textContent = data.user.fullname || data.user.username;
+                    document.getElementById('userName').textContent = data.user.fullname || data.user.username;
+                    document.getElementById('userRole').textContent = data.user.primary_role ? data.user.primary_role.display_name : 'Ecosystem Member';
+                } else {
+                    statusDiv.className = 'status logged-out';
+                    statusDiv.innerHTML = '<strong>❌ NOT LOGGED IN</strong>';
+                    
+                    // Update test navigation
+                    document.getElementById('authButtons').style.display = 'block';
+                    document.getElementById('welcomeMessage').style.display = 'none';
+                    document.getElementById('userMenu').style.display = 'none';
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('authStatus').innerHTML = '<strong>❌ ERROR:</strong> ' + error.message;
+                document.getElementById('debugInfo').textContent = 'Error: ' + error.message;
+            }
+        }
+        
+        function testLogin() {
+            window.location.href = '/auth/auth/login.html';
+        }
+        
+        function testLogout() {
+            window.location.href = '/auth/auth/logout.php';
+        }
+        
+        // Check auth status on page load
+        checkAuth();
+        
+        // Auto-refresh every 5 seconds
+        setInterval(checkAuth, 5000);
+    </script>
+</body>
+</html>

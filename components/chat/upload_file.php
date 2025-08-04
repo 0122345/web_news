@@ -1,4 +1,9 @@
 <?php
+// Configure session settings
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_only_cookies', 1);
+ini_set('session.cookie_samesite', 'Lax');
+
 session_start();
 
 // Check if user is logged in
@@ -11,7 +16,7 @@ if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "user_management";
+$dbname = "fiacomm";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -20,16 +25,24 @@ if ($conn->connect_error) {
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {
-    $user_id = $_SESSION['user_id'];
-    $room_id = $_POST['room_id'] ?? null;
+$user_id = $_SESSION['user_id'];
+
+// Check if this is a file upload request
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file']) && isset($_POST['room_id'])) {
+    $room_id = $_POST['room_id'];
+    $file = $_FILES['file'];
     
-    if (!$room_id) {
-        echo json_encode(['success' => false, 'message' => 'Room ID required']);
+    // Validate room access
+    $check_participant = "SELECT role FROM chat_participants WHERE room_id = ? AND user_id = ?";
+    $stmt = $conn->prepare($check_participant);
+    $stmt->bind_param("ii", $room_id, $user_id);
+    $stmt->execute();
+    $participant_result = $stmt->get_result();
+    
+    if ($participant_result->num_rows == 0) {
+        echo json_encode(['success' => false, 'message' => 'You are not a participant in this room']);
         exit;
     }
-    
-    $file = $_FILES['file'];
     
     // Validate file
     if ($file['error'] !== UPLOAD_ERR_OK) {
@@ -38,90 +51,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {
     }
     
     // Check file size (max 10MB)
-    $maxSize = 10 * 1024 * 1024; // 10MB
-    if ($file['size'] > $maxSize) {
+    if ($file['size'] > 10 * 1024 * 1024) {
         echo json_encode(['success' => false, 'message' => 'File size must be less than 10MB']);
         exit;
     }
     
     // Get file info
-    $originalName = $file['name'];
-    $fileSize = $file['size'];
-    $tmpName = $file['tmp_name'];
-    $fileExtension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+    $original_name = $file['name'];
+    $file_size = $file['size'];
+    $file_type = $file['type'];
+    $temp_path = $file['tmp_name'];
     
-    // Allowed file types
-    $allowedTypes = [
-        'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', // Images
-        'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', // Documents
-        'txt', 'rtf', 'csv', // Text files
-        'zip', 'rar', '7z', // Archives
-        'mp3', 'wav', 'ogg', // Audio
-        'mp4', 'avi', 'mov', 'wmv' // Video
-    ];
-    
-    if (!in_array($fileExtension, $allowedTypes)) {
-        echo json_encode(['success' => false, 'message' => 'File type not allowed']);
-        exit;
+    // Create uploads directory if it doesn't exist
+    $upload_dir = '../../uploads/chat_files/';
+    if (!is_dir($upload_dir)) {
+        mkdir($upload_dir, 0755, true);
     }
-    
-    // Create upload directories if they don't exist
-    $uploadDir = 'uploads/';
-    $filesDir = $uploadDir . 'files/';
-    $imagesDir = $uploadDir . 'images/';
-    
-    if (!file_exists($uploadDir)) {
-        mkdir($uploadDir, 0755, true);
-    }
-    if (!file_exists($filesDir)) {
-        mkdir($filesDir, 0755, true);
-    }
-    if (!file_exists($imagesDir)) {
-        mkdir($imagesDir, 0755, true);
-    }
-    
-    // Determine if it's an image
-    $imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
-    $isImage = in_array($fileExtension, $imageTypes);
     
     // Generate unique filename
-    $uniqueName = uniqid() . '_' . time() . '.' . $fileExtension;
-    $targetDir = $isImage ? $imagesDir : $filesDir;
-    $targetPath = $targetDir . $uniqueName;
+    $file_extension = pathinfo($original_name, PATHINFO_EXTENSION);
+    $unique_name = uniqid() . '_' . time() . '.' . $file_extension;
+    $file_path = $upload_dir . $unique_name;
     
     // Move uploaded file
-    if (move_uploaded_file($tmpName, $targetPath)) {
-        // Determine message type
-        $messageType = $isImage ? 'image' : 'file';
+    if (move_uploaded_file($temp_path, $file_path)) {
+        // Determine message type based on file type
+        $message_type = 'file';
+        if (strpos($file_type, 'image/') === 0) {
+            $message_type = 'image';
+        }
         
-        // Insert into database
-        $sql = "INSERT INTO chat_messages (room_id, user_id, message, message_type, file_name, file_path, file_size) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        
-        $message = $isImage ? "Shared an image: $originalName" : "Shared a file: $originalName";
-        
-        $stmt->bind_param("iissssi", $room_id, $user_id, $message, $messageType, $originalName, $targetPath, $fileSize);
+        // Insert file message into database
+        $insert_msg = "INSERT INTO chat_messages (room_id, user_id, message, message_type, file_name, file_path, file_size, file_type) 
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($insert_msg);
+        $message_text = "Shared a file: " . $original_name;
+        $stmt->bind_param("iissssss", $room_id, $user_id, $message_text, $message_type, $original_name, $file_path, $file_size, $file_type);
         
         if ($stmt->execute()) {
+            // Update participant's last_seen
+            $update_seen = "UPDATE chat_participants SET last_seen = NOW() WHERE room_id = ? AND user_id = ?";
+            $stmt = $conn->prepare($update_seen);
+            $stmt->bind_param("ii", $room_id, $user_id);
+            $stmt->execute();
+            
             echo json_encode([
                 'success' => true, 
                 'message' => 'File uploaded successfully',
-                'file_type' => $messageType,
-                'file_name' => $originalName
+                'message_id' => $conn->insert_id,
+                'file_name' => $original_name,
+                'file_size' => $file_size
             ]);
         } else {
             // Delete uploaded file if database insert fails
-            unlink($targetPath);
-            echo json_encode(['success' => false, 'message' => 'Failed to save file info']);
+            unlink($file_path);
+            echo json_encode(['success' => false, 'message' => 'Failed to save file message']);
         }
-        
-        $stmt->close();
     } else {
         echo json_encode(['success' => false, 'message' => 'Failed to upload file']);
     }
 } else {
-    echo json_encode(['success' => false, 'message' => 'No file uploaded']);
+    echo json_encode(['success' => false, 'message' => 'Invalid request']);
 }
 
 $conn->close();
