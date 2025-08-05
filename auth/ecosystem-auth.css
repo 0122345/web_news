@@ -26,11 +26,11 @@
     --eco-gray-200: #e2e8f0;
     --eco-gray-300: #cbd5e1;
     --eco-gray-400: #94a3b8;
-    --eco-gray-500: #64748b;
+    --eco-gray-500: #101822;
     --eco-gray-600: #475569;
     --eco-gray-700: #334155;
     --eco-gray-800: #1e293b;
-    --eco-gray-900: #0f172a;
+    --eco-gray-900: #05080f;
     
     /* Status Colors */
     --eco-success: #10b981;
@@ -161,7 +161,7 @@ body {
     66% { transform: translateY(-15px) rotate(240deg); }
 }
 
-/* Auth Container */
+/* Auth Container label */
 .auth-container {
     position: relative;
     z-index: 2;
@@ -278,14 +278,14 @@ body {
     align-items: center;
     gap: var(--eco-space-sm);
     font-weight: 600;
-    color: var(--eco-gray-700);
+    color: black;
     font-size: 0.875rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
 .form-group label i {
-    color: var(--eco-primary);
+    color: black;
     font-size: 1rem;
 }
 
@@ -409,7 +409,7 @@ body {
     align-items: center;
     gap: var(--eco-space-sm) !important;
     font-weight: 500 !important;
-    color: var(--eco-gray-700) !important;
+    color: black !important;
     font-size: 0.875rem !important;
     text-transform: none !important;
     letter-spacing: normal !important;

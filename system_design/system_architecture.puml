@@ -1,0 +1,200 @@
+@startuml Fiacomm System Architecture
+allowmixing
+
+!define RECTANGLE class
+
+title Fiacomm - Organizational Ecosystem Communication Platform\nSystem Architecture Overview
+
+' Define color scheme
+!define PRIMARY_COLOR #2563eb
+!define SECONDARY_COLOR #059669
+!define ACCENT_COLOR #dc2626
+!define NEUTRAL_COLOR #6b7280
+
+' Authentication Module
+package "Authentication System" as auth_system {
+    RECTANGLE "Login System" as login {
+        + login.html
+        + login.php
+        + check_session.php
+        + debug_login.php
+    }
+    
+    RECTANGLE "Registration System" as signup {
+        + signup.html
+        + signup.php
+    }
+    
+    RECTANGLE "User Management" as user_mgmt {
+        + profile.php
+        + dashboard.php
+        + logout.php
+    }
+    
+    RECTANGLE "Database Setup" as db_setup {
+        + database_setup.sql
+        + ecosystem-auth.css
+    }
+}
+
+' Home Module
+package "Home Interface" as home_system {
+    RECTANGLE "Landing Page" as landing {
+        + index.html
+        + style.css
+        + script.js
+    }
+    
+    RECTANGLE "Authentication Check" as auth_check {
+        + auth-check.js
+        + test-auth.html
+        + test-final.html
+    }
+}
+
+' Chat System
+package "Chat & Communication" as chat_system {
+    RECTANGLE "Chat Interface" as chat_ui {
+        + chat.html
+        + chat.css
+        + chat.js
+        + chat_fixed.js
+        + enhanced_chat.js
+    }
+    
+    RECTANGLE "Chat Backend" as chat_backend {
+        + chatroom.php
+        + create_room.php
+        + upload_file.php
+    }
+    
+    RECTANGLE "Chat Database" as chat_db {
+        + chat.sql
+        + uploads/
+    }
+}
+
+' Collaboration System
+package "Collaboration Hub" as collab_system {
+    RECTANGLE "Collaboration Interface" as collab_ui {
+        + collab.html
+        + collab.css
+        + collab.js
+    }
+    
+    RECTANGLE "Collaboration Backend" as collab_backend {
+        + collab.php
+    }
+}
+
+' Blog System
+package "Blog & Content" as blog_system {
+    RECTANGLE "Blog Interface" as blog_ui {
+        + blog.html
+        + blog.css
+        + blog.js
+    }
+    
+    RECTANGLE "Blog Backend" as blog_backend {
+        + blog.php
+    }
+}
+
+' Features & Services
+package "Core Features" as features_system {
+    RECTANGLE "Comment System" as comments {
+        + add_comment.php
+        + get_comments.php
+    }
+    
+    RECTANGLE "Article Management" as articles {
+        + get_articles.php
+        + toggle_like.php
+        + track_share.php
+    }
+    
+    RECTANGLE "Announcements" as announcements {
+        + announcement.php
+    }
+}
+
+' Database Layer
+database "MySQL Database" as database {
+    entity "Users Table" as users_table
+    entity "Chat Tables" as chat_tables
+    entity "Content Tables" as content_tables
+    entity "Roles & Permissions" as roles_tables
+}
+
+' External Dependencies
+cloud "External Services" as external {
+    component "Font Awesome" as fontawesome
+    component "Google Fonts" as gfonts
+    component "CDN Resources" as cdn
+}
+
+' Relationships - Authentication Flow
+login --> user_mgmt : "Successful Login"
+signup --> user_mgmt : "Registration Complete"
+user_mgmt --> database : "User Data"
+auth_check --> login : "Not Authenticated"
+
+' Relationships - Main Navigation
+landing --> login : "Login Required"
+landing --> chat_ui : "Navigate to Chat"
+landing --> blog_ui : "Navigate to Blog"
+landing --> collab_ui : "Navigate to Collaboration"
+
+' Relationships - Chat System
+chat_ui --> chat_backend : "AJAX Requests"
+chat_backend --> chat_db : "Message Storage"
+chat_backend --> database : "User Validation"
+
+' Relationships - Collaboration System
+collab_ui --> collab_backend : "API Calls"
+collab_backend --> database : "Project Data"
+
+' Relationships - Blog System
+blog_ui --> blog_backend : "Content Requests"
+blog_backend --> features_system : "Comments & Likes"
+features_system --> database : "Content Storage"
+
+' Relationships - Database Connections
+auth_system --> database : "Authentication Data"
+chat_system --> database : "Chat Data"
+collab_system --> database : "Collaboration Data"
+blog_system --> database : "Content Data"
+
+' Relationships - External Dependencies
+home_system --> external : "CSS/JS Libraries"
+chat_system --> external : "UI Components"
+collab_system --> external : "Icons & Fonts"
+blog_system --> external : "Styling Resources"
+
+' User Flow Annotations
+note right of login : "Session-based authentication\nwith role-based permissions"
+note right of chat_backend : "Real-time messaging\nwith file upload support"
+note right of collab_ui : "Kanban boards, todos,\nand calendar integration"
+note right of database : "Centralized data storage\nwith user roles & permissions"
+
+' System Boundaries
+package "Frontend Layer" {
+    home_system
+    chat_ui
+    collab_ui
+    blog_ui
+}
+
+package "Backend Layer" {
+    auth_system
+    chat_backend
+    collab_backend
+    blog_backend
+    features_system
+}
+
+package "Data Layer" {
+    database
+}
+
+@enduml

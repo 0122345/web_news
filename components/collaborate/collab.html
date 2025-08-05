@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiacomm - Collaboration Hub</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+     <link rel="icon" type="image/png" href="/auth/assets/images/logo.png">
+    <link rel="stylesheet" href="collab.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+               <img src="/auth/assets/images/logo_ins.png" alt="" srcset="" width="50" height="50">
+                <span>Fiacomm</span>
+            </div>
+            <div class="user-info">
+                <span id="userName">Loading...</span>
+                <div class="user-avatar" id="userAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-tabs">
+        <ul>
+            <li><button class="tab-btn active" data-tab="boards"><i class="fas fa-columns"></i> Boards</button></li>
+            <li><button class="tab-btn" data-tab="todos"><i class="fas fa-tasks"></i> Todos</button></li>
+            <li><button class="tab-btn" data-tab="calendar"><i class="fas fa-calendar-alt"></i> Calendar</button></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Boards Tab -->
+        <div id="boards" class="tab-content active">
+            <div class="action-bar">
+                <h2><i class="fas fa-columns"></i> Collaboration Boards</h2>
+                <button class="btn btn-primary" onclick="openModal('boardModal')">
+                    <i class="fas fa-plus"></i> Create Board
+                </button>
+            </div>
+            <div class="cards-grid boards-grid" id="boardsGrid">
+                <!-- Boards will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Todos Tab -->
+        <div id="todos" class="tab-content">
+            <div class="action-bar">
+                <h2><i class="fas fa-tasks"></i> Todo Management</h2>
+                <button class="btn btn-primary" onclick="openModal('todoModal')">
+                    <i class="fas fa-plus"></i> Add Todo
+                </button>
+            </div>
+            <div class="cards-grid todos-grid" id="todosGrid">
+                <!-- Todos will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Calendar Tab -->
+        <div id="calendar" class="tab-content">
+            <div class="action-bar">
+                <h2><i class="fas fa-calendar-alt"></i> Event Calendar</h2>
+                <button class="btn btn-primary" onclick="openModal('eventModal')">
+                    <i class="fas fa-plus"></i> Add Event
+                </button>
+            </div>
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <h3 id="currentMonth">December 2024</h3>
+                    <div class="calendar-nav">
+                        <button onclick="previousMonth()"><i class="fas fa-chevron-left"></i></button>
+                        <button onclick="nextMonth()"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Calendar will be generated here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Board Modal -->
+    <div class="modal" id="boardModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Board</h3>
+                <button class="close-btn" onclick="closeModal('boardModal')">&times;</button>
+            </div>
+            <form id="boardForm" onsubmit="createBoard(event)">
+                <div class="form-group">
+                    <label for="boardTitle">Board Title</label>
+                    <input type="text" id="boardTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="boardDescription">Description</label>
+                    <textarea id="boardDescription" class="form-control textarea"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="boardCategory">Category</label>
+                    <select id="boardCategory" class="form-control">
+                        <option value="project">Project Management</option>
+                        <option value="brainstorm">Brainstorming</option>
+                        <option value="planning">Planning</option>
+                        <option value="research">Research</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Create Board
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Todo Modal -->
+    <div class="modal" id="todoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Todo</h3>
+                <button class="close-btn" onclick="closeModal('todoModal')">&times;</button>
+            </div>
+            <form id="todoForm" onsubmit="createTodo(event)">
+                <div class="form-group">
+                    <label for="todoTitle">Todo Title</label>
+                    <input type="text" id="todoTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="todoDescription">Description</label>
+                    <textarea id="todoDescription" class="form-control textarea"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="todoPriority">Priority</label>
+                    <select id="todoPriority" class="form-control">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="todoDueDate">Due Date</label>
+                    <input type="date" id="todoDueDate" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Todo
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Event Modal -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Event</h3>
+                <button class="close-btn" onclick="closeModal('eventModal')">&times;</button>
+            </div>
+            <form id="eventForm" onsubmit="createEvent(event)">
+                <div class="form-group">
+                    <label for="eventTitle">Event Title</label>
+                    <input type="text" id="eventTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventDescription">Description</label>
+                    <textarea id="eventDescription" class="form-control textarea"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="eventDate">Date</label>
+                    <input type="date" id="eventDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventTime">Time</label>
+                    <input type="time" id="eventTime" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Event
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

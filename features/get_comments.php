@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "user_management";
+$dbname = "fiacomm";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

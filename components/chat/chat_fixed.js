@@ -1,4 +1,4 @@
-// Fixed Chat Application JavaScript - No Message Duplication
+ 
 class ChatApp {
     constructor() {
         this.currentRoomId = null;

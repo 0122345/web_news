@@ -395,7 +395,7 @@ $conn->close();
                     </div>
                     
                     <div class="message-input">
-                        <input type="text" id="messageInput" placeholder="Type your message..." maxlength="1000">
+                        <input type="text" id="messageInput" placeholder="Type your message..." maxlength="1000" required>
                         <button onclick="sendMessage()" class="btn-send">
                             <i class="fas fa-paper-plane"></i>
                         </button>

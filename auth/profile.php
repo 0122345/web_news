@@ -76,7 +76,7 @@ $conn->close();
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2rem;
             font-weight: 700;
-            color: var(--eco-gray-900);
+            color: black;
             margin-bottom: 0.5rem;
         }
         
@@ -125,7 +125,7 @@ $conn->close();
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1.25rem;
             font-weight: 600;
-            color: var(--eco-gray-900);
+            color: gray;
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
@@ -154,7 +154,7 @@ $conn->close();
         
         .info-value {
             font-size: 1rem;
-            color: var(--eco-gray-900);
+            color: black;
             font-weight: 500;
         }
         

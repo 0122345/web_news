@@ -63,11 +63,13 @@ $conn->close();
     <link rel="stylesheet" href="ecosystem-auth.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+         
         .dashboard-container {
             min-height: 100vh;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            background: linear-gradient(135deg, #ebececff 0%, #ced5ddff 100%);
             padding: 2rem;
-        }
+            color: var(--eco-gray-900);
+        }   
         
         .dashboard-header {
             background: rgba(255, 255, 255, 0.95);
@@ -89,13 +91,13 @@ $conn->close();
         .welcome-text h1 {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2rem;
-            font-weight: 700;
-            color: var(--eco-gray-900);
+            font-weight: 700; 
             margin-bottom: 0.5rem;
+            color: black;
         }
         
         .welcome-text p {
-            color: var(--eco-gray-600);
+            color: var(--eco-gray-900);
             font-size: 1.125rem;
         }
         
@@ -106,7 +108,7 @@ $conn->close();
             padding: 1rem 1.5rem;
             border-radius: 1rem;
             font-weight: 600;
-            color: white;
+            color: var(--eco-gray-900);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
         
@@ -129,6 +131,8 @@ $conn->close();
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
+            color: black;
+
         }
         
         .stat-card:hover {
@@ -151,12 +155,12 @@ $conn->close();
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            color: white;
+            color: var(--eco-gray-900);
         }
         
         .stat-title {
             font-weight: 600;
-            color: var(--eco-gray-700);
+            color: gray;
             font-size: 0.875rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -165,12 +169,12 @@ $conn->close();
         .stat-value {
             font-size: 2.5rem;
             font-weight: 800;
-            color: var(--eco-gray-900);
+            color: black;
             margin-bottom: 0.5rem;
         }
         
         .stat-description {
-            color: var(--eco-gray-600);
+            color: var(--eco-gray-900);
             font-size: 0.875rem;
         }
         
@@ -231,7 +235,7 @@ $conn->close();
         .permission-text {
             font-size: 0.875rem;
             font-weight: 500;
-            color: var(--eco-gray-700);
+            color: var(--eco-gray-900);
         }
         
         .quick-actions {
